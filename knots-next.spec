@@ -517,6 +517,9 @@ checkout v30.0rc1
 	Needs concept & review: 34812 w0xlt/fix-33471-cjdns-externalip
 	n/a   fix_typos_from_pr33152-29.3
 	34870 fix_wallet_bump_fail_crash-29.3						last=6072a2a6a1f furszy/2026_feebumper_crash_fix
+	k458  2rdzy/wallet-descriptor-range-overflow			last=4188a6cb6b9
+	(CHECK-LAST)	last=93c8aec3fbc origin-pull/35989/head
+		# Backport of #35989
 	Needs work: 34872 w0xlt/wallet-mixed-input-history-only
 	34888 furszy/2026_wallet_total_amount_bad_comparison
 	Review: 34893 w0xlt/psbt-proprietary-merge-fix
@@ -1339,6 +1342,8 @@ checkout v30.0rc1
 		# + knots#352
 		# FIXME: fix automatic tor outbound using subprocess
 		# FIXME: -netinfo doesn't show tor if inbound-only?
+	k462  privkeyio/tor-launch-interruptible				last=d762ab702b1
+	k464  privkeyio/tor-stop-launched-process				last=7b34977a926
 	# TODO: tor guix bundle!
 	#30.xTODO# 16490 maflcko/1907-rpcMempoolWhyReplacable
 	#	TODO: Diff-minimise
@@ -1600,10 +1605,13 @@ checkout v30.0rc1
 	Needs work: k271  privkeyio/policy-tapscript-dust-limit
 	k272  subdustfeepenalty-29.3+knots						last=af7d6f6adba privkeyio/policy-subdust-fee-penalty
 		# Partial: remaining in rwconf_policy
-	k438  privkeyio/policy-monetary-defaults-29+knots		last=e1555552181 connorslab/policy-monetary-defaults
+	k438  connorslab/policy-monetary-defaults				last=30d3ee5024c
 	Needs review: k275  privkeyio/feature-rbf-feerate-mode
 	Needs review: k280  privkeyio/feature-priority-vsize-discount
 	k292  Retropex/rework-opnet
+	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
+	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
+	k463  privkeyio/datacarrier_bpub-29+knots				last=1f0834d31af
 	#31.xTODO# Consider reverting parts of #33489 (build: Drop support for EOL macOS 13) and #33573
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 	30.xTODO: Consider #33892 policy: allow <minrelay txns in package context if paid for by cpfp
@@ -1696,6 +1704,7 @@ checkout v30.0rc1
 	# Needs concept & review: k217 1440000bytes/feefilter-extrapool
 	k354  rejecttokens_def-29+knots							last=8228ad0d6d9 pdath/rejecttokens
 		# Added corepolicy
+	k400  jasonsopko/policy-dead-branch-data				last=df767118a99
 # HARDFORK:
 	# Disabled: k289  rdts_not_enforced_prompt
 	k238 rdts_combined-29+knots								last=f62f5fda667

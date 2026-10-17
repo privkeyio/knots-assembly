@@ -554,6 +554,9 @@ TM	34561 docfix_rpcwallet_send_eg_pr34561-23	3f8228aa133	last=50cf6838e6a
 	# Needs concept & review: 34812 w0xlt/fix-33471-cjdns-externalip
 	n/a   fix_typos_from_pr33152-29.3			c22beebd2aa
 	34870 fix_wallet_bump_fail_crash-29.3		f5755f2310c	last=6072a2a6a1f furszy/2026_feebumper_crash_fix
+	k458  2rdzy/wallet-descriptor-range-overflow			last=4188a6cb6b9
+	(CHECK-LAST)	last=93c8aec3fbc origin-pull/35989/head
+		# Backport of #35989
 	# Needs work: 34872 w0xlt/wallet-mixed-input-history-only
 	34888 fix_wallet_coinsel_pr34888-25			7b5f73d8b0d	last=0026b330c4a furszy/2026_wallet_total_amount_bad_comparison
 	34893 fix_psbt_merge_proprietary-29			6a1cfb13e29	last=da769855d0c w0xlt/psbt-proprietary-merge-fix
@@ -1403,6 +1406,8 @@ TM	35209 fix_precomptxdata_lifetime_CVE_2024_52911-27	da7a2310746
 		# + knots#352
 		# FIXME: fix automatic tor outbound using subprocess
 		# FIXME: -netinfo doesn't show tor if inbound-only?
+	k462  privkeyio/tor-launch-interruptible				last=d762ab702b1
+	k464  privkeyio/tor-stop-launched-process				last=7b34977a926
 	# TODO: tor guix bundle!
 	#30.xTODO# 16490 maflcko/1907-rpcMempoolWhyReplacable
 	#	TODO: Diff-minimise
@@ -1660,10 +1665,13 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	# Needs work: k271  privkeyio/policy-tapscript-dust-limit
 	k272  subdustfeepenalty-29.3+knots			1d805859e44	last=af7d6f6adba privkeyio/policy-subdust-fee-penalty
 		# Partial: remaining in rwconf_policy
-	k438  privkeyio/policy-monetary-defaults-29+knots		last=e1555552181 connorslab/policy-monetary-defaults
+	k438  connorslab/policy-monetary-defaults				last=30d3ee5024c
 	# Needs review: k275  privkeyio/feature-rbf-feerate-mode
 	# Needs review: k280  privkeyio/feature-priority-vsize-discount
 	k292  datacarrier_opnet-29+knots			a7027f894ab	last=6938c68fe68 Retropex/rework-opnet
+	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
+	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
+	k463  privkeyio/datacarrier_bpub-29+knots				last=1f0834d31af
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 # Non-upstreamed Knots compatibility:
 	#30.xTODO# maybe revert #33214 rpc: require integer verbosity; remove boolean 'verbose'
@@ -1750,6 +1758,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	# Needs concept & review: k217 1440000bytes/feefilter-extrapool
 	k354  rejecttokens_def-29+knots				aff00ffdcd3	last=792dae6539a pdath/rejecttokens
 		# Added corepolicy
+	k400  jasonsopko/policy-dead-branch-data				last=df767118a99
 # HARDFORK:
 	# Disabled: k289  rdts_not_enforced_prompt
 	k238 rdts_combined-29+knots					20db4c5a728	last=f62f5fda667
