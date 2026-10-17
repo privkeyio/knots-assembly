@@ -1671,7 +1671,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	k292  datacarrier_opnet-29+knots			a7027f894ab	last=6938c68fe68 Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
 	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=1f0834d31af
+	k463  privkeyio/datacarrier_bpub-29+knots				last=1bc2e15ce63
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 # Non-upstreamed Knots compatibility:
 	#30.xTODO# maybe revert #33214 rpc: require integer verbosity; remove boolean 'verbose'
@@ -1827,7 +1827,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	n/a   (cherrypick=12b8288afc7)				05089efa62a	# bump to 29.4.3
 #	n/a  knots_historical_relnotes				61100a2
 	n/a   rm_historical_relnotes_from_dist		b905c7939a3
-	n/a   (cherrypick=ddac7301fd1)				fcb5053e061  # release notes: write/update, including change log and credits
+	n/a   (cherrypick=51a31bd12b0)				fcb5053e061  # release notes: write/update, including change log and credits
 		# WHEN UPDATING: Remember to check for new authors/co-authors for credits
 		# git log --pretty=%s v0.20.0..v0.20.1.knots20200815 >lol && perl -nle 'm[^- #(\d+) (.*) \(.*?\)$] && print "$1 $2"' doc/release-notes.md | while read prnum subj; do grep "\\b$prnum\\b\|\\Q$prbody\\E" lol; done
 		# git log --pretty=%s v0.18.0..v0.17.1.knots20181229 >lol && lol v0.18.0..|while IFS= read -r g; do s=$(perl -nle 'm/^.*\*[ \\|]* ([\da-f]{10,})( \(.*?\))? (.*)$/ or exit; $_=$3;s/^(Merge [gk]?\d+ ).*/$1/;print' <<<"$g"); if [ "$s" = "" ]; then echo "$g"; elif fgrep -q "$s" lol; then echo "$g"; else echo $'\033'"[0;31m$g"$'\033'"[0m"; fi; done|less -R

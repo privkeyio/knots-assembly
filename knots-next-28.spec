@@ -1811,7 +1811,7 @@ MERGED	31407 macos_notarization-28					530a83a27bf	last=e181bda061c achow101/mac
 	k292  Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
 	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=1f0834d31af
+	k463  privkeyio/datacarrier_bpub-29+knots				last=1bc2e15ce63
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 # Non-upstreamed Knots compatibility:
 	n/a   rpc_compat_error_index-25+knots		1ebc7d004d3

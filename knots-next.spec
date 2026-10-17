@@ -1611,7 +1611,7 @@ checkout v30.0rc1
 	k292  Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
 	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=1f0834d31af
+	k463  privkeyio/datacarrier_bpub-29+knots				last=1bc2e15ce63
 	#31.xTODO# Consider reverting parts of #33489 (build: Drop support for EOL macOS 13) and #33573
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 	30.xTODO: Consider #33892 policy: allow <minrelay txns in package context if paid for by cpfp
