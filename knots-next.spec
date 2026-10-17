@@ -1538,6 +1538,7 @@ checkout v30.0rc1
 		TODO: Review knots#268
 		30.xTODO: TODO: Add to getmempoolinfo like #29954 (MERGED) (see b02aab950af)
 		#30.xTODO# Add tests and make sure boundaries are correct
+	k465  privkeyio/saturate-gettxsize						last=ba89815a9e9
 	-     acceptnonstddatacarrier-29+knots		8a91d7f00f0
 		30.xTODO: TODO: Add to getmempoolinfo like #29954 (MERGED) (see b02aab950af)
 		# FIXME: Data before OP_RETURN (and non-push opcodes??) should count the data as non-standard (but can't predict everything, so wait until there's a need? 75f1652b447)
@@ -1611,7 +1612,7 @@ checkout v30.0rc1
 	k292  Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
 	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=1bc2e15ce63
+	k463  privkeyio/datacarrier_bpub-29+knots				last=95372763321
 	#31.xTODO# Consider reverting parts of #33489 (build: Drop support for EOL macOS 13) and #33573
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 	30.xTODO: Consider #33892 policy: allow <minrelay txns in package context if paid for by cpfp

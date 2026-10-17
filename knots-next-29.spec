@@ -1597,6 +1597,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 		# + knots#268 (partial; remaining in rwconf_policy)
 		#30.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
 		#30.xTODO# Add tests and make sure boundaries are correct
+	k465  privkeyio/saturate-gettxsize						last=ba89815a9e9
 	-     acceptnonstddatacarrier-29+knots		f988d827bb7
 		#30.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
 		# FIXME: Data before OP_RETURN (and non-push opcodes??) should count the data as non-standard (but can't predict everything, so wait until there's a need? 75f1652b447)
@@ -1671,7 +1672,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	k292  datacarrier_opnet-29+knots			a7027f894ab	last=6938c68fe68 Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
 	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=1bc2e15ce63
+	k463  privkeyio/datacarrier_bpub-29+knots				last=95372763321
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 # Non-upstreamed Knots compatibility:
 	#30.xTODO# maybe revert #33214 rpc: require integer verbosity; remove boolean 'verbose'
