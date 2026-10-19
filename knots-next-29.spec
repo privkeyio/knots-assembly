@@ -554,7 +554,7 @@ TM	34561 docfix_rpcwallet_send_eg_pr34561-23	3f8228aa133	last=50cf6838e6a
 	# Needs concept & review: 34812 w0xlt/fix-33471-cjdns-externalip
 	n/a   fix_typos_from_pr33152-29.3			c22beebd2aa
 	34870 fix_wallet_bump_fail_crash-29.3		f5755f2310c	last=6072a2a6a1f furszy/2026_feebumper_crash_fix
-	k458  2rdzy/wallet-descriptor-range-overflow			last=4188a6cb6b9
+	k458  2rdzy/wallet-descriptor-range-overflow			last=c5890125ce9
 	(CHECK-LAST)	last=93c8aec3fbc origin-pull/35989/head
 		# Backport of #35989
 	# Needs work: 34872 w0xlt/wallet-mixed-input-history-only
@@ -793,7 +793,7 @@ TM	35209 fix_precomptxdata_lifetime_CVE_2024_52911-27	da7a2310746
 	34253 lockless_isibd-26+knots				79045eca69e	last=557b41a38cc l0rinc/l0rinc/cache-ibd-status
 		# NOTE: diff-minimised, and did not backport refactor commits
 		# NOTE: various libbitcoinkernel changes needed, if libbitcoinkernel features (#30595 in particular) are backported
-	k451  2rdzy/fix-reindex-init-deadlock					last=c1afd1ce8ba
+	k451  2rdzy/fix-reindex-init-deadlock					last=3296b30e78f
 	(CHECK-LAST)	last=c1313b199fe origin-pull/35652/head
 		# Backport of #35652, with the test adapted to 29.x
 	# Needs review: 34400 -  # wallet: parallel fast rescan (approx 5x speed up with 16 threads)
@@ -1522,7 +1522,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 		# Revert of #23927
 	-     rpc_getblockfrompeer_wo_header		44c9042f5ba
 		# Prior Knots bundled this in with #20295
-	k450  2rdzy/fix-fetchblock-cs-main						last=1a2066e13c2
+	k450  2rdzy/fix-fetchblock-cs-main						last=63badaedc46
 	(CHECK-LAST)	last=359680b74db origin-pull/35498/head
 		# Backport of #35498
 	# TODO? * 4b6813a95bd wallet: trigger MaybeResendWalletTxs() at startup (+ 1 second)
@@ -1578,6 +1578,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 		# If mempool-knots.dat is ever extended to store easily manipulatable data, port Xor stuff over
 		# Reverts (needed and better performance & memusage): d0cd2e804ec [refactor] rewrite BlockAssembler inBlock and failedTx as sets of txids
 		# Reverts (needed for lock logic): 192dac1d337 [refactor] Cleanup BlockAssembler mempool usage
+	k446  connorslab/policy-priority-fee-floor				last=c9a6b466ec4
 	7219  rbf_opts-29+knots						997d69e5829	# Latest code now
 	-     truc_opts-29.2+knots					83f8dd408be
 	#TODO/Needs work: 10823 greenaddress/replace-by-fee-old-transactions
@@ -1601,6 +1602,7 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	-     acceptnonstddatacarrier-29+knots		f988d827bb7
 		#30.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
 		# FIXME: Data before OP_RETURN (and non-push opcodes??) should count the data as non-standard (but can't predict everything, so wait until there's a need? 75f1652b447)
+	k457  privkeyio/datacarrier_reject_type-29+knots		last=d640ba21c1f
 	# ---- END DATACARRIER ----
 	k136  pol_permitephemeral					17b3ba654ca
 		# Also includes permitbare{anchor,datacarrier} options
@@ -1671,8 +1673,8 @@ NM	14137 win_taskbar_progress					ca96c2575ea	last=18eb4dbb8a
 	# Needs review: k280  privkeyio/feature-priority-vsize-discount
 	k292  datacarrier_opnet-29+knots			a7027f894ab	last=6938c68fe68 Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
-	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=95372763321
+	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=fa51824f2d7
+	k463  privkeyio/datacarrier_bpub-29+knots				last=ad24234c8e4
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 # Non-upstreamed Knots compatibility:
 	#30.xTODO# maybe revert #33214 rpc: require integer verbosity; remove boolean 'verbose'

@@ -1646,6 +1646,7 @@ MERGED	31407 macos_notarization-28					530a83a27bf	last=e181bda061c achow101/mac
 		#28.xTODO# FIXME: Should blockmintxfee apply to blockprioritysize??
 		# If mempool-knots.dat is ever extended to store easily manipulatable data, port Xor stuff over
 		# Reverts (needed and better performance & memusage): d0cd2e804ec [refactor] rewrite BlockAssembler inBlock and failedTx as sets of txids
+	k446  connorslab/policy-priority-fee-floor				last=c9a6b466ec4
 	5861 gui_restore_addresses					39668f36473
 	5891  qt_console_history_persist			76638518995	last=d7bc5138e19 qt_console_history_persist
 	(CHECK-LAST)	last=6a5537ab675 origin-pull-k/203/head
@@ -1675,7 +1676,7 @@ MERGED	31407 macos_notarization-28					530a83a27bf	last=e181bda061c achow101/mac
 		# Revert of #23927
 	-     rpc_getblockfrompeer_wo_header		b7fb698aa73
 		# Prior Knots bundled this in with #20295
-	k450  2rdzy/fix-fetchblock-cs-main						last=1a2066e13c2
+	k450  2rdzy/fix-fetchblock-cs-main						last=63badaedc46
 	(CHECK-LAST)	last=359680b74db origin-pull/35498/head
 		# Backport of #35498
 	# TODO? * 4b6813a95bd wallet: trigger MaybeResendWalletTxs() at startup (+ 1 second)
@@ -1810,8 +1811,8 @@ MERGED	31407 macos_notarization-28					530a83a27bf	last=e181bda061c achow101/mac
 	Needs review: k280  privkeyio/feature-priority-vsize-discount
 	k292  Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
-	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=95372763321
+	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=fa51824f2d7
+	k463  privkeyio/datacarrier_bpub-29+knots				last=ad24234c8e4
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 # Non-upstreamed Knots compatibility:
 	n/a   rpc_compat_error_index-25+knots		1ebc7d004d3

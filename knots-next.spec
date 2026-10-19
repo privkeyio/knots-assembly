@@ -517,7 +517,7 @@ checkout v30.0rc1
 	Needs concept & review: 34812 w0xlt/fix-33471-cjdns-externalip
 	n/a   fix_typos_from_pr33152-29.3
 	34870 fix_wallet_bump_fail_crash-29.3						last=6072a2a6a1f furszy/2026_feebumper_crash_fix
-	k458  2rdzy/wallet-descriptor-range-overflow			last=4188a6cb6b9
+	k458  2rdzy/wallet-descriptor-range-overflow			last=c5890125ce9
 	(CHECK-LAST)	last=93c8aec3fbc origin-pull/35989/head
 		# Backport of #35989
 	Needs work: 34872 w0xlt/wallet-mixed-input-history-only
@@ -749,7 +749,7 @@ checkout v30.0rc1
 	34253 lockless_isibd-26+knots							last=557b41a38cc l0rinc/l0rinc/cache-ibd-status
 		# NOTE: diff-minimised, and did not backport refactor commits
 		# NOTE: various libbitcoinkernel changes needed, if libbitcoinkernel features (#30595 in particular) are backported
-	k451  2rdzy/fix-reindex-init-deadlock					last=c1afd1ce8ba
+	k451  2rdzy/fix-reindex-init-deadlock					last=3296b30e78f
 	(CHECK-LAST)	last=c1313b199fe origin-pull/35652/head
 		# Backport of #35652, with the test adapted to 29.x
 	# Needs review: 34400 -  # wallet: parallel fast rescan (approx 5x speed up with 16 threads)
@@ -1458,7 +1458,7 @@ checkout v30.0rc1
 		# Revert of #23927
 	-     rpc_getblockfrompeer_wo_header		5362fefac62
 		# Prior Knots bundled this in with #20295
-	k450  2rdzy/fix-fetchblock-cs-main						last=1a2066e13c2
+	k450  2rdzy/fix-fetchblock-cs-main						last=63badaedc46
 	(CHECK-LAST)	last=359680b74db origin-pull/35498/head
 		# Backport of #35498
 	# TODO? * 4b6813a95bd wallet: trigger MaybeResendWalletTxs() at startup (+ 1 second)
@@ -1518,6 +1518,7 @@ checkout v30.0rc1
 		# If mempool-knots.dat is ever extended to store easily manipulatable data, port Xor stuff over
 		# Reverts (needed and better performance & memusage): d0cd2e804ec [refactor] rewrite BlockAssembler inBlock and failedTx as sets of txids
 		# Reverts (needed for lock logic): 192dac1d337 [refactor] Cleanup BlockAssembler mempool usage
+	k446  connorslab/policy-priority-fee-floor				last=c9a6b466ec4
 	7219  rbf_opts-29+knots						7f4ab04e735	# Latest code now
 		#31.xTODO# Revert #34911,#34917 probably
 	-     truc_opts-29.2+knots					f15f7e9994a
@@ -1542,6 +1543,7 @@ checkout v30.0rc1
 	-     acceptnonstddatacarrier-29+knots		8a91d7f00f0
 		30.xTODO: TODO: Add to getmempoolinfo like #29954 (MERGED) (see b02aab950af)
 		# FIXME: Data before OP_RETURN (and non-push opcodes??) should count the data as non-standard (but can't predict everything, so wait until there's a need? 75f1652b447)
+	k457  privkeyio/datacarrier_reject_type-29+knots		last=d640ba21c1f
 	# ---- END DATACARRIER ----
 	k136  pol_permitephemeral					379b005b239
 		# Also includes permitbare{anchor,datacarrier} options
@@ -1611,8 +1613,8 @@ checkout v30.0rc1
 	Needs review: k280  privkeyio/feature-priority-vsize-discount
 	k292  Retropex/rework-opnet
 	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
-	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=eea24673b4d
-	k463  privkeyio/datacarrier_bpub-29+knots				last=95372763321
+	k422  privkeyio/policy-unproven-pubkey-datacarrier		last=fa51824f2d7
+	k463  privkeyio/datacarrier_bpub-29+knots				last=ad24234c8e4
 	#31.xTODO# Consider reverting parts of #33489 (build: Drop support for EOL macOS 13) and #33573
 	# TODO? Dust multiplier by # of outputs: https://x.com/snapolino/status/1976708308603224518
 	30.xTODO: Consider #33892 policy: allow <minrelay txns in package context if paid for by cpfp
