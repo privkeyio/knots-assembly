@@ -56,10 +56,7 @@ them. They are not style preferences.
   Staleness alone is not a reason to move: the assembler only requires that your
   branch still merges cleanly, so a branch pinned well behind the base is fine
   as-is.
-- **Merge cleanly.** Every conflict your branch causes has to be resolved by hand
-  and recorded as a `.diff` in [`assemble-knots-resolutions/`](assemble-knots-resolutions) so the build stays
-  reproducible. A branch that applies clean is far more likely to be taken and
-  costs no one maintenance. If you conflict with the base, rebase onto it first.
+- **Merge cleanly.** When a branch conflicts, the maintainer has to resolve it in a separate merge branch and keep that branch in step with yours. A branch that applies clean is far more likely to be taken and costs no one maintenance. If you conflict with the base, rebase onto it first.
 - **Keep the branch stable.** Once your PR is in the spec it is pinned with
   `last=<sha>`. If you force-push, that pin goes stale and the assembler stops
   with `<pr> needs updates from upstream`, and
