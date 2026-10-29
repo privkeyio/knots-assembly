@@ -48,7 +48,7 @@ recipe is three lines:
 ```
 checkout v29.3.knots20260508
 timestamp 2026-05-07 03:45:44
-	n/a	chrisguida/garbageman-29.3	last=ccc7097e24 chrisguida/garbageman-29.3
+	n/a   chrisguida/garbageman-29.3						last=ccc7097e240 chrisguida/garbageman-29.3
 ```
 
 Save it as `knots-garbageman.spec` and assemble it (see "Assembling by hand"
@@ -64,22 +64,22 @@ tells the assembler which remote to use:
 | name in the spec | where it comes from |
 |---|---|
 | `chrisguida/garbageman-29.3` | `chrisguida/bitcoin`, branch `garbageman-29.3` |
+| `privkeyio/rdts-miner-override` | `privkeyio/bitcoin`, branch `rdts-miner-override` |
 | `origin-pull-k/319/head` | `bitcoinknots/bitcoin` PR 319 |
 | `origin-pull/NNNN/head` | `bitcoin/bitcoin` PR NNNN |
 
-Here is garbageman plus four in-flight PRs of my own. These are proposed
-refinements to reduced-data policy, not the RDTS softfork itself (that is already
-merged into Knots as #238). They may or may not land upstream; they are here only
-as an example of stacking your own branches:
+The first column is the PR number, padded to six characters (`n/a` when there is no PR). Put the author's branch in the second column, the way the official specs do.
+
+Here is garbageman plus four reduced-data policy PRs, written as branches on top of 29.3. These are refinements, not the RDTS softfork itself (that is already merged into Knots as #238). As of Knots 29.4.3, #319 and a reworked #320 have shipped, #323 was closed, and #324 is still open. They are here only as an example of stacking your own branches:
 
 ```
 checkout v29.3.knots20260508
 timestamp 2026-05-07 03:45:44
-	n/a	chrisguida/garbageman-29.3	last=ccc7097e24 chrisguida/garbageman-29.3
-	k319	origin-pull-k/319/head	last=3b776a4c6b origin-pull-k/319/head
-	k320	origin-pull-k/320/head	last=d97ca9de47 origin-pull-k/320/head
-	k323	origin-pull-k/323/head	last=ff900daadf origin-pull-k/323/head
-	k324	origin-pull-k/324/head	last=02331284b1 origin-pull-k/324/head
+	n/a   chrisguida/garbageman-29.3						last=ccc7097e240 chrisguida/garbageman-29.3
+	k319  privkeyio/fix-bip110-envelope-datacarrier			last=5e3153edef4
+	k320  privkeyio/rdts-guard-opif-tapscript				last=74a8dd54ae8
+	k323  privkeyio/fix-rdts-script-cache-inactive			last=d58e6f82909
+	k324  privkeyio/rdts-miner-override						last=909736fb33b
 ```
 
 All five merges come out clean, with 14 commits over the release. Both the
@@ -87,10 +87,7 @@ garbageman code and the PR changes are present.
 
 Two things to know:
 
-- Any branch with a `/` in its name needs `last=<sha> <branch>` after it. This
-  pins the commit you built against so you can tell when the branch moves later.
-  Leave it off and the assembler stops with "provide last= for direct remote
-  merge."
+- Any branch with a `/` in its name needs `last=<sha>`, the branch head you last reviewed. Leave it off and the assembler stops with "Please provide last= for direct remote merge." On every build it compares that sha to the current head and stops with "needs updates from upstream" if the branch moved, so nothing new slips in unreviewed. For a PR line it checks the PR head, so `last=<sha>` alone is enough. An `n/a` line has no PR, so name the branch to check after the sha, as the garbageman line does.
 - A PR's base is usually not the release. These PRs target `29.x-knots`, which is
   a little ahead of the 29.3 release, so each one also brings the few dev commits
   between the release and the branch. Here that is about two commits each and
@@ -106,6 +103,7 @@ the assembler directly:
 # 1. a bitcoin repo with the base tag and your branches as remotes
 git clone https://github.com/bitcoinknots/bitcoin.git bitcoin && cd bitcoin
 git remote add chrisguida https://github.com/chrisguida/bitcoin.git
+git remote add privkeyio https://github.com/privkeyio/bitcoin.git
 git remote add origin-pull-k https://github.com/bitcoinknots/bitcoin.git
 git fetch --all
 git fetch origin-pull-k '+refs/pull/*/head:refs/remotes/origin-pull-k/*/head'
@@ -115,7 +113,7 @@ git branch -f master FETCH_HEAD   # the assembler's poison check needs a local m
 # 2. work from the base tag and run the assembler on your spec
 git worktree add --detach ../build v29.3.knots20260508
 cd ../build
-perl ../knots-assembly/assemble-knots/assemble-knots.pl --skip-update-check ../my.spec
+perl ../knots-assembly/assemble-knots/assemble-knots.pl ../my.spec
 ```
 
 Run `extract-remotes.pl < my.spec` to print the exact remotes and refs a spec

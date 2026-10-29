@@ -40,10 +40,8 @@ Standard PR hygiene applies, and `bitcoinknots/bitcoin` ships its own
 [`CONTRIBUTING.md`](https://github.com/bitcoinknots/bitcoin/blob/29.x-knots/CONTRIBUTING.md)
 at the repo root: one logical change, tests for what you change, a clear
 rationale. Sign your commits.
-Target the current Knots dev branch,
-[`29.x-knots`](https://github.com/bitcoinknots/bitcoin/tree/29.x-knots), for a
-Knots PR, not a release
-tag, so your branch sits just ahead of the release the way the assembler expects.
+
+Open the PR against the current Knots dev branch, [`29.x-knots`](https://github.com/bitcoinknots/bitcoin/tree/29.x-knots), but base the branch itself on the oldest commit your change applies to: the commit that introduced the bug for a fix, or the oldest release that has the code you touch. The assembler merges your branch into each release, so an old base merges cleanly into every newer one without dragging in unreleased dev commits.
 
 ## Step 2: make the branch the assembler can replay
 
@@ -76,15 +74,23 @@ When your change is accepted it becomes one line in
 in-progress spec for the next 29.x release. Here is a real one:
 
 ```text
-	k292  datacarrier_opnet-29+knots		last=6938c68fe68 Retropex/rework-opnet
+	k319  privkeyio/fix-bip110-envelope-datacarrier	2b742c24b31	last=5e3153edef4
 ```
 
-Reading left to right: Knots PR **#292**; `datacarrier_opnet-29+knots`, the name
-the merge is recorded under; `last=6938c68fe68`, the exact commit the spec was
-pinned and tested against; and `Retropex/rework-opnet`, the source branch on the
-`Retropex/bitcoin` fork. This is a datacarrier policy change, the kind of
-Knots-specific work that belongs in the Knots repo and nowhere else. A Core PR
-entry looks the same without the `k` prefix.
+Reading left to right:
+
+- `k319` is Knots PR #319.
+- `privkeyio/fix-bip110-envelope-datacarrier` is the author's branch that gets merged.
+- `2b742c24b31` is the merge commit the last assembly produced.
+- `last=5e3153edef4` is the PR head the maintainer last reviewed. Each build compares it against the PR head and stops if your branch has moved, so new commits are not picked up until someone reviews them.
+
+A Core PR entry looks the same without the `k` prefix.
+
+If the maintainer has to rebase your branch, the line names the maintainer's copy and puts your branch after `last=`, so the build still watches your branch for updates:
+
+```text
+	k320  miniscript_guard_tapscript_opif-29	70d4ff8cea1	last=74a8dd54ae8 privkeyio/rdts-guard-opif-tapscript
+```
 
 You do not add this line; the maintainer does, when assembling the next release.
 What gets you there is review. Tested ACKs are what move a PR from "open" to "in
@@ -100,10 +106,7 @@ change:
 - `check-pr-updates.pl` compares every PR referenced in the spec against its
   GitHub `updated_at` and reports the ones that have moved since the last
   assembly. That is the drift signal.
-- If your branch needs to move to a newer base, rebase it and tell the maintainer
-  the new `last=` sha. Re-homing a fix onto a new release base is exactly what the
-  [`daggy`](https://wiki.monotone.ca/DaggyFixes/) tooling automates, but the source
-of truth is still your rebased branch.
+- If your branch stops merging cleanly, rebase it onto the oldest commit it now applies to and tell the maintainer the new `last=` sha. Re-homing a fix onto a new release base is exactly what the [`daggy`](https://wiki.monotone.ca/DaggyFixes/) tooling automates, but the source of truth is still your rebased branch.
 - If your change is a bug fix, add a regression test in the same PR. It is what
   lets the fix be bisected to its introducing commit and re-homed safely later.
 
@@ -111,7 +114,7 @@ of truth is still your rebased branch.
 
 1. Open the PR against `bitcoinknots/bitcoin`, GUI included. Core is an optional
    courtesy, never the path into Knots.
-2. Keep the branch a clean, rebased stack. Never merge upstream into it.
+2. Base the branch on the oldest commit it applies to and keep it a clean, rebased stack. Never merge upstream into it.
 3. Make it merge cleanly and stay pinnable.
 4. Earn tested ACKs. The maintainer adds the spec line; you keep the branch alive.
 
