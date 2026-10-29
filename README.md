@@ -1,12 +1,5 @@
 # Bitcoin Knots assembly spec
 
-> **Note for reviewers:** while this PR is under review, the CI runs
-> described below live on
-> [`chrisguida/knots-assembly`][cguida-fork]. After merge they will
-> appear on this repository's Actions tab.
-
-[cguida-fork]: https://github.com/chrisguida/knots-assembly/actions/workflows/reproduce.yml
-
 This repository holds the **assembly specs** for every published
 Bitcoin Knots release. A Knots release isn't a separate codebase;
 it's a derivation of a specific Bitcoin Core release tag, layered
@@ -46,7 +39,7 @@ Recognised entry shapes:
 
 | Shape | Meaning |
 |-------|---------|
-| `<prnum>  <branch>  [last=<sha>]` | Merge `<branch>` (with optional release-time tip pin) |
+| `<prnum>  <branch>  [last=<sha>]` | Merge `<branch>`. `last=` is the upstream head last reviewed, and the build stops if it moved |
 | `NM\t<prnum>  <branch>` | Null merge (record without altering tree) |
 | `TM\t<prnum>  <branch>` | Tree merge (adopt a tree without recording history) |
 | `(cherrypick=<sha>) <lastapply>` | Cherry-pick a specific commit |
@@ -88,13 +81,13 @@ committer email the Knots maintainers use for assembly merges, and
 keyed by patch-ids that include the diff3 common-ancestor marker).
 See `.ci/run-driver.sh` for the full set.
 
-## Release reproduction CI *(new in this branch)*
+## Release reproduction CI
 
-This branch adds a GitHub Actions workflow
-(`.github/workflows/reproduce.yml`) that reproduces the most recent
+A GitHub Actions workflow
+(`.github/workflows/reproduce.yml`) reproduces the most recent
 published Knots release **byte-exact** from public sources only, on
 every push and on a nightly cron. The workflow targets the newest
-dated release (currently **`v29.3.knots20260508`**) and completes in
+dated release (currently **`v29.4.3.knots20260508`**) and completes in
 a couple of minutes.
 
 **What a green run proves:** the published spec for the targeted
@@ -105,18 +98,11 @@ means either a public artifact has drifted in a way that breaks
 reproduction, or the reproduction harness has a regression; both
 worth knowing about.
 
-### See it passing
-
-The [Actions tab][cguida-fork] (currently on the review fork) renders
-the latest run's result table at the top of its summary page
-(expected SHA, reproduced SHA, ref-synthesis stats), no log diving
-needed.
-
 ### Reproduce locally
 
 ```sh
-git clone --recurse-submodules \
-  https://github.com/chrisguida/knots-assembly.git    # or this repo's URL after merge
+git clone --recurse-submodules -b sub-knots \
+  https://github.com/privkeyio/knots-assembly.git
 cd knots-assembly
 ./.ci/run-all.sh
 ```
@@ -138,16 +124,19 @@ In CI, the same override is available on the workflow's "Run
 workflow" dispatch dialog; leave the input blank for the
 auto-detected default.
 
-Releases known to reproduce byte-exact with this pipeline, every
-final dated 29.x Knots release published to date (release candidates
-aside):
+Releases known to reproduce byte-exact with this pipeline, every final dated 29.x Knots release published to date except `v29.4.1.knots20260508` (release candidates aside):
 
+- `v29.4.3.knots20260508`
+- `v29.4.2.knots20260508`
+- `v29.4.knots20260508`
 - `v29.3.knots20260508`
 - `v29.3.knots20260507`
 - `v29.3.knots20260210`
 - `v29.2.knots20251110`
 - `v29.2.knots20251010`
 - `v29.1.knots20250903`
+
+`v29.4.1.knots20260508` does not reproduce from public sources. Its spec cherry-picks the version bump from `12816ba10df`, a commit no public repository serves.
 
 Earlier releases (pre-29) reproduce too but need an era-appropriate
 `git` binary (the driver keys recorded conflict resolutions by
