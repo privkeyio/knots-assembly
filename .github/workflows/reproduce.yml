@@ -23,7 +23,7 @@ name: Reproduce latest Knots release (byte-exact)
 
 on:
   push:
-    branches: [knots-spec, ci-reproduce]
+    branches: [knots-spec, ci-reproduce, sub-knots]
   schedule:
     - cron: "17 4 * * *"   # 04:17 UTC nightly
   workflow_dispatch:
