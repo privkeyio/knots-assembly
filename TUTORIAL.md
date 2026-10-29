@@ -20,11 +20,11 @@ cd knots-assembly
 ./.ci/run-all.sh v29.4.3.knots20260508
 ```
 
-The tag is all you need. The script finds the matching spec, fetches every branch, runs the assembler, and compares the result to the release tag. If it matches, that release is reproducible from public sources. If it does not, a branch upstream moved or was deleted.
+The tag is all you need. The script finds the matching spec, fetches every branch, runs the assembler, and compares the result to the release tag. If it matches, that release is reproducible from public sources. Branches that moved after the release do not matter, because the script resets each one to the commit the release merged. A mismatch means a commit the spec needs is no longer public, or your git setup differs (see below).
 
-You only need `git` and `perl`. The assembler is plain Perl with no extra modules to install.
+You need `bash`, `git` and `perl`, plus the standard tools and disk space listed under "System requirements" in [`README.md`](README.md). The assembler is plain Perl with no extra modules to install.
 
-The assembler reads git's diff output, so it fails on conflicts if your git config sets `diff.mnemonicPrefix` or `diff.noprefix`. Check with `git config --get diff.mnemonicPrefix` and `git config --get diff.noprefix`, and turn either off for these runs, for example by prefixing commands with `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=diff.mnemonicPrefix GIT_CONFIG_VALUE_0=false`.
+The assembler reads git's diff output, so it fails on conflicts if your git config sets `diff.mnemonicPrefix` or `diff.noprefix`. Check with `git config --get diff.mnemonicPrefix` and `git config --get diff.noprefix`, and turn either off for these runs, for example by prefixing commands with `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=diff.mnemonicPrefix GIT_CONFIG_VALUE_0=false` (git 2.31 or newer).
 
 ## Part 2: Build your own sub-Knots
 
@@ -40,7 +40,7 @@ timestamp 2026-05-07 03:45:44
 	k453  2rdzy/fix-muhash-self-division					last=5d5eb51cb5c
 ```
 
-Save it as `my.spec` and assemble it (see "Assembling by hand" below). The result is a clean merge, one commit over the release.
+Save it as `my.spec` and assemble it (see "Assembling by hand" below). The result is a clean merge: the PR's one commit plus the merge commit.
 
 Each line after the header is one merge:
 
@@ -48,7 +48,7 @@ Each line after the header is one merge:
 - `2rdzy/fix-muhash-self-division` is the author's branch, `<owner>/<branch>` on that owner's `bitcoin` fork.
 - `last=5d5eb51cb5c` is the branch head you last reviewed.
 
-The `timestamp` line sets the commit dates, so the same spec always produces the same commits. Copy it from the release's own spec.
+The `timestamp` line sets the commit dates. Copy it from the release's own spec.
 
 ### Stack several branches
 
@@ -61,11 +61,11 @@ timestamp 2026-05-07 03:45:44
 	k452  2rdzy/port-core-35550-sendcmpct-announce			last=c080c0e25f2
 ```
 
-Both merges come out clean, with two commits over the release. The second PR makes nodes reject a `sendcmpct` announce value greater than 1.
+Both merges come out clean: each PR's one commit plus its merge commit. The second PR makes nodes reject a `sendcmpct` announce value greater than 1.
 
 Two things to know:
 
-- Any branch with a `/` in its name needs `last=<sha>`. Leave it off and the assembler stops with "Please provide last= for direct remote merge." On every build it compares that sha to the PR head and stops with "needs updates from upstream" if the PR moved, so nothing new slips in unreviewed. Review the new commits, then update the sha. For an `n/a` line there is no PR head to check, so name the branch to watch after the sha: `last=<sha> <owner>/<branch>`.
+- Any branch with a `/` in its name needs `last=<sha>`. Leave it off and the assembler stops with "Please provide last= for direct remote merge of ...". On every build it compares that sha to the PR head and stops with "needs updates from upstream" if the PR moved, so nothing new slips in unreviewed. Review the new commits, then update the sha. An `n/a` line has no PR head to check, so it must name the branch to watch after the sha, `last=<sha> <owner>/<branch>`, or the assembler stops with "Latest upstream is undefined!".
 - A branch merges cleanly into a release when it is based on a commit the release already contains. Both PRs here are, so each brings only its own commit. A branch based on a newer dev branch also brings the dev commits between the release and its base, and if it is far ahead you will get conflicts. Use a branch based on an older commit, or resolve the conflict in your own branch as shown below.
 
 ### Assembling by hand
@@ -88,11 +88,11 @@ cd ../build
 perl ../knots-assembly/assemble-knots/assemble-knots.pl ../my.spec
 ```
 
-Add one remote per branch owner in your spec. `perl ../knots-assembly/extract-remotes.pl < ../my.spec` prints the remotes and refs a spec needs. The `origin-pull-k` refs are what the update check compares `last=` against.
+Add one remote per branch owner in your spec. `perl ../knots-assembly/extract-remotes.pl < ../my.spec` prints the remotes for the branch column. It leaves out two kinds of ref the update check needs, so fetch those yourself: the PR heads (the `origin-pull-k` fetch above, or `origin-pull` from `bitcoin/bitcoin` for Core PRs), and any branch named after `last=`.
 
 ### When a merge conflicts
 
-If a branch conflicts with the release or with an earlier line in your spec, resolve it once in a branch of your own and put that branch in the spec. This is how the official specs handle conflicts.
+If a branch conflicts with the release or with an earlier line in your spec, resolve it once in a merge branch of your own and put that branch in the spec. The author's branch stays as it is. This is how the official specs handle conflicts.
 
 Start from what it conflicts with, merge the author's branch into it, resolve, and push:
 
@@ -114,14 +114,14 @@ That line is from the 29.4.3 spec. The merge is now clean, and when the author p
 
 ## Part 3: Compile
 
-From `../build`:
+Install the build dependencies first: `doc/build-unix.md` in the tree lists them (a C++ compiler, CMake, Boost, libevent, and SQLite for the wallet). Then, from `../build`:
 
 ```bash
 cmake -B build
 cmake --build build -j"$(nproc)"
 ```
 
-That builds `bitcoind`, `bitcoin-cli`, the wallet and the unit tests. Add `-D BUILD_GUI=ON` for `bitcoin-qt`, which needs the Qt 6 development packages.
+That builds `bitcoind`, `bitcoin-cli`, the wallet and the unit tests. Add `-D BUILD_GUI=ON` for `bitcoin-qt`. That needs the Qt 5 development packages, or Qt 6 with `-D WITH_QT_VERSION=6` as well.
 
 ## Part 4: Run it and check it is stable
 

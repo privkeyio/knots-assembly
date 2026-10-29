@@ -10,8 +10,8 @@ how to perform that derivation deterministically.
 Together with the [`assemble-knots`][assemble-knots] driver (a
 submodule at `assemble-knots/`) and the recorded conflict resolutions
 in `assemble-knots-resolutions/`, an assembled tree can be derived
-from these specs plus public upstream sources. The CI added in this
-branch verifies that derivation is **byte-exact** against the
+from these specs plus public upstream sources. The CI in `.github/workflows/`
+verifies that derivation is **byte-exact** against the
 published release tag for the most recent dated release.
 
 [assemble-knots]: https://github.com/bitcoinknots/assemble-deriv
@@ -86,7 +86,7 @@ See `.ci/run-driver.sh` for the full set.
 A GitHub Actions workflow
 (`.github/workflows/reproduce.yml`) reproduces the most recent
 published Knots release **byte-exact** from public sources only, on
-every push and on a nightly cron. The workflow targets the newest
+every push to `sub-knots`. The nightly cron in the workflow only runs on a repository whose default branch carries it. The workflow targets the newest
 dated release (currently **`v29.4.3.knots20260508`**) and completes in
 a couple of minutes.
 
@@ -191,4 +191,4 @@ pre-`v29` releases is handled offline and is out of CI scope for now.
 | `check-pr-updates.pl`, `check-pr-updates.sh` | Detect upstream PR drift since a recorded timestamp |
 | `extract-remotes.pl` | Spec → `(remote, url, refspec)` triples (used by CI) |
 | `geninfo-to-html.pl` | Render assembly-info into HTML |
-| `.ci/`, `.github/workflows/` | Reproduction CI (this branch) |
+| `.ci/`, `.github/workflows/` | Reproduction CI |
