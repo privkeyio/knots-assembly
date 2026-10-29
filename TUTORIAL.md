@@ -81,11 +81,12 @@ git fetch 2rdzy
 git fetch origin-pull-k '+refs/pull/*/head:refs/remotes/origin-pull-k/*/head'
 git fetch https://github.com/bitcoin/bitcoin.git master
 git branch -f master FETCH_HEAD   # the assembler's poison check needs a local master (Core's)
+git config merge.conflictStyle diff3   # the assembler's conflict healer reads diff3 markers
 
 # 2. work from the base tag and run the assembler on your spec
 git worktree add --detach ../build v29.4.3.knots20260508
 cd ../build
-perl ../knots-assembly/assemble-knots/assemble-knots.pl ../my.spec
+TZ=UTC perl ../knots-assembly/assemble-knots/assemble-knots.pl ../my.spec
 ```
 
 Add one remote per branch owner in your spec. `perl ../knots-assembly/extract-remotes.pl < ../my.spec` prints the remotes for the branch column. It leaves out two kinds of ref the update check needs, so fetch those yourself: the PR heads (the `origin-pull-k` fetch above, or `origin-pull` from `bitcoin/bitcoin` for Core PRs), and any branch named after `last=`.
@@ -141,6 +142,72 @@ Two cautions:
 
 - You are trusting your own build, not the release signatures. The spec is what makes that auditable: anyone can rebuild the same source and check it.
 - Never point it at a datadir written by a newer version. Moving forward is safe, going backwards can force a full re-sync.
+
+## Part 5: Package it for StartOS
+
+StartOS installs services from `.s9pk` packages. Start from the existing Knots package for your release's chain and have it build your spec instead of a fixed commit. Knots 29.4.x follows the BLAKE2b chain, so start from [`paulscode/knots-blake2b-startos`](https://github.com/paulscode/knots-blake2b-startos). As of October 2026 the official Start9 Knots package ships 29.3 on the SHA256 chain, so do not put a 29.4.x build into it. The BLAKE2b package is a companion node: pruned to 5000 MiB by default, on ports 18443 to 18445, meant to run beside a node on the other chain. Its README covers the details.
+
+You need Docker, Node.js with npm, `jq` and `start-cli` (see the [StartOS packaging setup](https://docs.start9.com/packaging/environment-setup.html)). `start-cli` only packs inside a packaging workspace, so make one first. From the directory that holds `my.spec`:
+
+```bash
+mkdir s9 && cd s9
+start-cli s9pk init-workspace
+git clone https://github.com/paulscode/knots-blake2b-startos
+cd knots-blake2b-startos
+cp ../../my.spec sub-knots.spec
+```
+
+Then make two edits.
+
+1. In the `Dockerfile` build stage, make three changes:
+   - Replace the `KNOTS_REPO` and `KNOTS_REF` args with the assembler pin:
+     ```dockerfile
+     ARG ASSEMBLER_REF=892ab94e9ca71d11af07155daf43a398720ce43e
+     ```
+     That is the commit the `assemble-knots` submodule in `knots-assembly` points at. `git -C ../../knots-assembly rev-parse HEAD:assemble-knots` prints it.
+   - Add `perl` to the `apt-get install` line.
+   - Replace the `RUN` that fetches `KNOTS_REF`, which comes after `apt-get`, with the assembly from Part 2. For the stack spec above:
+   ```dockerfile
+   RUN git init -q /assembler \
+    && git -C /assembler fetch -q --depth 1 https://github.com/bitcoinknots/assemble-deriv.git "$ASSEMBLER_REF" \
+    && git -C /assembler checkout -q FETCH_HEAD
+
+   COPY sub-knots.spec /sub-knots.spec
+
+   WORKDIR /src
+   RUN git init -q \
+    && git config user.name sub-knots \
+    && git config user.email sub-knots@localhost \
+    && git config merge.conflictStyle diff3 \
+    && git remote add origin https://github.com/bitcoinknots/bitcoin.git \
+    && git remote add 2rdzy https://github.com/2rdzy/bitcoin.git \
+    && git remote add origin-pull-k https://github.com/bitcoinknots/bitcoin.git \
+    && git fetch -q --filter=blob:none origin tag v29.4.3.knots20260508 \
+    && git fetch -q --filter=blob:none 2rdzy \
+           +refs/heads/fix-muhash-self-division:refs/remotes/2rdzy/fix-muhash-self-division \
+           +refs/heads/port-core-35550-sendcmpct-announce:refs/remotes/2rdzy/port-core-35550-sendcmpct-announce \
+    && git fetch -q --filter=blob:none origin-pull-k \
+           +refs/pull/453/head:refs/remotes/origin-pull-k/453/head \
+           +refs/pull/452/head:refs/remotes/origin-pull-k/452/head \
+    && git fetch -q --filter=tree:0 https://github.com/bitcoin/bitcoin.git master \
+    && git branch -f master FETCH_HEAD \
+    && git checkout -q --detach v29.4.3.knots20260508 \
+    && TZ=UTC perl /assembler/assemble-knots.pl /sub-knots.spec </dev/null \
+    && git rev-parse HEAD > /src/PINNED_COMMIT
+   ```
+   Add one remote, branch fetch and PR head fetch per line in your spec. The container has no git config, so this sets a git identity and `diff3` itself, and runs with `TZ=UTC` as Part 2 does.
+2. In `startos/versions/current.ts`, bump the revision after the colon, for example `29.4.3:0` to `29.4.3:1`, so StartOS sees your build as newer than the package it replaces. Update `notes` in the same file to list your branches. Upstream's next revision will also count as newer, so an update from the registry replaces your build with the stock one. Check before accepting one.
+
+Build it:
+
+```bash
+npm ci
+make x86    # or make arm
+```
+
+The build log shows the assembler's `Merge k453 via ...` and `Merge k452 via ...` lines and `COMPLETE`, then the Knots compile, and ends with `knots-blake2b_x86_64.s9pk` (`knots-blake2b_aarch64.s9pk` for `make arm`). The package builds without tests, so run Part 4 on your Part 3 build first. Then sideload the file from your server's web interface, or run `make install` with `start-cli` logged in to your server. On start, the service log prints `knots-blake2b: pinned commit <sha>`, the commit the assembler produced.
+
+The spec is not one of the files `make` watches, so after editing it run `rm -f *.s9pk` before `make`, or it repacks nothing and reports the old build. When a new release comes out, update your spec, discard the two edits with `git checkout -- Dockerfile startos/versions/current.ts`, `git pull` the package, and redo them.
 
 ## Sharing
 
