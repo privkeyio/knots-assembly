@@ -192,3 +192,4 @@ pre-`v29` releases is handled offline and is out of CI scope for now.
 | `extract-remotes.pl` | Spec → `(remote, url, refspec)` triples (used by CI) |
 | `geninfo-to-html.pl` | Render assembly-info into HTML |
 | `.ci/`, `.github/workflows/` | Reproduction CI |
+| `TUTORIAL.md`, `CONTRIBUTING.md`, `MAINTAINING.md` | Guides: build your own Knots, get a change into Knots, maintain the next-release spec |

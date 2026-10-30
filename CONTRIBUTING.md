@@ -66,3 +66,5 @@ Landing is not the end. When Core or the Knots dev branch moves under your chang
 4. Earn tested ACKs. The maintainer adds the spec line, and you keep the branch alive.
 
 New to the assembler? Build a one-line spec of your own first with [`TUTORIAL.md`](TUTORIAL.md). Watching it replay a branch makes these rules concrete.
+
+How the spec itself is kept ready for the next release is in [`MAINTAINING.md`](MAINTAINING.md).
