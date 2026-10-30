@@ -135,6 +135,8 @@ A `cherrypick=` line cherry-picks that commit, and a `bump_version=` line merges
 - Swap the rc bump line (`# bump to rcN`).
 - Regenerate manpages, the example `bitcoin.conf`, and shell completions, then point the manpages line at the new commit.
 
+The `knots<date>` suffix in `bump_version=` changes only when the Knots feature set changes, and the `timestamp` line usually moves with it (29.3.knots20260508 kept the timestamp of 29.3.knots20260507, the pre-RDTS build tagged alongside it). Moving onto a new Core point release or shipping fixes keeps them: 29.4 through 29.4.3 all use `knots20260508` with `timestamp 2026-05-07 03:45:44`, while 29.2.knots20251010 and 29.2.knots20251110 share a Core base but carry different feature sets.
+
 The manpages must come from a Release build, or the `lock` log level ends up in them (the spec carries this warning). These commands reproduced the 29.4.3 manpages commit a7c4617524 byte for byte, from its parent:
 
 ```bash
