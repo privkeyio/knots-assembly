@@ -120,9 +120,16 @@ It counts assembler merge commits that are not in the last release, and it must 
 
 Name it `<branch>+knots` (with the series, for example `-29+knots`) on your fork. The spec line names your branch and keeps watching the author's after `last=`. When the author pushes, the update check stops the build. If no pending release spec uses your merge branch, merge their new commits into it, push, and update `last=`. If one does, leave that branch alone and push the update under a new name.
 
+The update check only watches the upstreams after `last=` and the PR head, not the branch column. If the merge branch itself gets new commits, the assembler merges them in without stopping. So the maintainer also watches the merge branch with a `(CHECK-LAST)` at its reviewed head, as on k491:
+
+```text
+	k491  privkeyio/fix_autofile_fseek_failure_cacheinv-29+knots	last=039ac0db17f fix_autofile_fseek_failure_cacheinv
+	(CHECK-LAST)	last=a912b45a801 privkeyio/fix_autofile_fseek_failure_cacheinv-29+knots
+```
+
 ### Old-style resolution files
 
-Older specs resolve conflicts with files in `assemble-knots-resolutions/`. When a merge conflicts, `mymerger` takes the `git patch-id` of the conflicted `git diff HEAD`, and applies `assemble-knots-resolutions/<id>.diff` (or follows `<id>.res`) if one exists. The assembler still reads them, and released specs still depend on them. The maintainer considers the model obsolete and apparently broken, so new conflicts get the `m` prefix (with the new base) or a merge branch (with an earlier line) instead, as described above. Two settings the conflict handling depends on:
+Older specs resolve conflicts with files in `assemble-knots-resolutions/`. When a merge conflicts, `mymerger` takes the `git patch-id` of the conflicted `git diff HEAD`, and applies `assemble-knots-resolutions/<id>.diff` (or follows `<id>.res`) if one exists. The assembler still reads them, and released specs still depend on them. New conflicts get the `m` prefix (with the new base) or a merge branch (with an earlier line) instead, which is now the standard, as described above. Two settings the conflict handling depends on:
 
 - `merge.conflictStyle diff3`. The automatic conflict healer (`smartconflicthealer`) parses diff3 markers.
 - Default diff prefixes. `diff.mnemonicPrefix` or `diff.noprefix` changes the diff the healer reads, so it gives up with the warning `Unparsable file-begin line`, and conflicts it would have resolved fall through to the base-branch test or the interactive prompt. Turn both off for assembler runs, for example with `GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=diff.mnemonicPrefix GIT_CONFIG_VALUE_0=false GIT_CONFIG_KEY_1=diff.noprefix GIT_CONFIG_VALUE_1=false`.
