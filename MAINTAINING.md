@@ -145,6 +145,8 @@ A `cherrypick=` line cherry-picks that commit, and a `bump_version=` line merges
 
 - Point `cherrypick=` at the exact commit generated in the previous assembled branch.
 - Revise the one release-notes line. Do not add a second one.
+- In the release notes, describe only what is new in this release. Behavior an earlier release already had, and caveats about it, stay out.
+- Build the credits with `git log vPREVIOUS.. --no-merges | grep '<.*>' | sort | uniq`, where `vPREVIOUS` is the previous Knots release tag. It lists every author and any `Co-authored-by` names. Use real names, list a person once even if they used two emails, and skip any message lines it also matches.
 - Swap the rc bump line (`# bump to rcN`).
 - Regenerate manpages, the example `bitcoin.conf`, and shell completions, then point the manpages line at the new commit.
 
