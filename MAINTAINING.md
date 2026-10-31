@@ -5,7 +5,7 @@
 ## The cycle
 
 1. After a release is tagged, its output spec becomes the new `knots-next-NN.spec`.
-2. Lines are added, updated and removed as PRs land.
+2. Lines are added, updated and removed as PRs land. Each change to `knots-next-29.spec` also goes into `knots-next.spec` (the master-based spec) and `knots-next-28.spec`, where it is often a `Triage:` line. The maintainer's 6d4f623aef is an example: it renames a line in `knots-next-29.spec` and `knots-next.spec` and adds `Triage: -     guix_prefetch-29` to `knots-next-28.spec`.
 3. When Core ships a new point release, the spec moves onto it.
 4. The release tail (version bump, release notes, manpages) is updated for each rc and the final.
 5. The spec is verified and handed to the maintainer, who assembles it on his machine and tags the result.
@@ -23,7 +23,7 @@ Tabs are 4 wide. A merge line is a tab, the PR number padded to six characters (
 - A branch with a `/` is `<owner>/<branch>` on that owner's fork. A bare branch name is one of the maintainer's own branches.
 - The hash column is the merge commit this line produced in the last assembly. It starts at column 48 (counting from 0, with 4-wide tabs), and `last=` starts at column 60. A line too long to reach a column gets a single tab instead. Use 11-character hashes.
 - `last=<sha>` is the upstream head that was last reviewed. If the branch column is our own copy, `last=` names the author's branch after the sha, so the update check still watches it. Never repeat the branch-column name after `last=`.
-- A prefix in front of the tab changes the merge: `TM` is a tree merge (see below), `NM` a null merge.
+- A prefix in front of the tab changes the merge: `TM` is a tree merge (see below), `NM` a null merge, and `m` merges the branch before the line's previous merge (see "Moving onto a new Core point release").
 - Everything after `#` is a comment, so a line starting with `#` (including markers like `#30.xTODO#`) is not merged.
 
 Extra upstreams are checked with `(CHECK-LAST)` lines, placed right after the line they belong to and before its comments:
@@ -88,8 +88,13 @@ The maintainer's "next-29: Begin rebase on 29.4" commit starts the move from 29.
 2. Mark every line the tag already includes as `TM`. A tree merge commits HEAD's tree unchanged, with the line's previous merge commit as an extra parent, so the history stays connected without changing any code.
 3. Never delete a line that has a hash. Each merge takes the previous assembly's merge for that line as a parent, and the assembler checks that this previous merge is exactly one first-parent step beyond what it has assembled so far. Delete a hashed line and its old merge is never assembled, so the next line fails that check with `Skipping a parent in rebase! Aborting`. Mark it `TM` instead.
 4. Add any new line without a hash column.
+5. A line whose previous merge conflicts with the new tag gets its branch updated for the tag (merge the tag into it and push it under a name with the new series, for example `privkeyio/fix_preallocate-29.5`), and the `m` prefix. Without `m`, the assembler merges the line's previous merge first and then any newer branch commits, so the old merge, built on the old base, conflicts with the new one. With `m` it merges the updated branch first and then the previous merge, which has nothing new left to add. The maintainer used `m` on 7 lines in 29.2, 11 in 29.3 and 5 in 29.4, and the flags drop out in the next "New -next" spec. In the 29.5 rc1 spec:
 
-A line that conflicts with the new base or with an earlier line gets a merge branch, not a hand fix during assembly. k451 in the 29.4.3 spec is one:
+```text
+m	33228 privkeyio/fix_preallocate-29.5		1841934f388	last=2c113ebc2d3 fix_preallocate
+```
+
+A line that conflicts with an earlier line gets a merge branch, not a hand fix during assembly. k451 in the 29.4.3 spec is one:
 
 ```text
 	k451  privkeyio/fix-reindex-init-deadlock-29+knots		last=3296b30e78f 2rdzy/fix-reindex-init-deadlock
@@ -105,11 +110,19 @@ git commit
 git push privkeyio fix-reindex-init-deadlock-29+knots
 ```
 
+The base must be a commit the maintainer also has: the head of the branch it conflicts with, or a commit from a released assembly. 79045eca69 is in the 29.4.2 release. k472 starts from 164a97b35b, the head of the k443 branch it conflicts with, and in 29.5 rc1 k499 starts from `fadvise-29+knots` and k491 from `opti_multibyte_xor-29+knots`. Never start from a commit made by your own assembly run. Assembled commits depend on the committer email and time zone (see "What the output spec does"), so the maintainer's run makes different ones, and a branch based on yours brings a second copy of your whole assembly into his. Your own runs recreate your commits, so a local assembly cannot catch this. Check the branch instead:
+
+```bash
+git rev-list --count -E --grep='^(Tree-)?Merge [^ ]+( via [^ ]+)?$' <merge branch> --not <last Knots release tag>
+```
+
+It counts assembler merge commits that are not in the last release, and it must print 0. The two broken 29.5 rc1 branches, based on a local assembly, printed 106 and 215.
+
 Name it `<branch>+knots` (with the series, for example `-29+knots`) on your fork. The spec line names your branch and keeps watching the author's after `last=`. When the author pushes, the update check stops the build. If no pending release spec uses your merge branch, merge their new commits into it, push, and update `last=`. If one does, leave that branch alone and push the update under a new name.
 
 ### Old-style resolution files
 
-Older specs resolve conflicts with files in `assemble-knots-resolutions/`. When a merge conflicts, `mymerger` takes the `git patch-id` of the conflicted `git diff HEAD`, and applies `assemble-knots-resolutions/<id>.diff` (or follows `<id>.res`) if one exists. The assembler still reads them, and released specs still depend on them. New conflicts get a merge branch instead, which is now the standard (k451 above). Two settings the conflict handling depends on:
+Older specs resolve conflicts with files in `assemble-knots-resolutions/`. When a merge conflicts, `mymerger` takes the `git patch-id` of the conflicted `git diff HEAD`, and applies `assemble-knots-resolutions/<id>.diff` (or follows `<id>.res`) if one exists. The assembler still reads them, and released specs still depend on them. The maintainer considers the model obsolete and apparently broken, so new conflicts get the `m` prefix (with the new base) or a merge branch (with an earlier line) instead, as described above. Two settings the conflict handling depends on:
 
 - `merge.conflictStyle diff3`. The automatic conflict healer (`smartconflicthealer`) parses diff3 markers.
 - Default diff prefixes. `diff.mnemonicPrefix` or `diff.noprefix` changes the diff the healer reads, so it gives up with the warning `Unparsable file-begin line`, and conflicts it would have resolved fall through to the base-branch test or the interactive prompt. Turn both off for assembler runs, for example with `GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=diff.mnemonicPrefix GIT_CONFIG_VALUE_0=false GIT_CONFIG_KEY_1=diff.noprefix GIT_CONFIG_VALUE_1=false`.
