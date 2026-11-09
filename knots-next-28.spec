@@ -749,6 +749,8 @@ NM	32187 zmq_devirtual_destructor-0.12
 	k336 qt_locale_datetime_prk336-29+k						last=2f53648f1a2 privkeyio/fix-gui-datetime-locale
 		# Second commit included later in softwareexpiry
 	k339 privkeyio/fix-pie-c-link-flags						last=66dc2de6c25
+	k237  privkeyio/159-build-checks						last=49e69180ed5
+		# + knots#254
 	k341  privkeyio/fix-bitcoind-help-version-datadir		last=0bed563ff9e
 	k344 -													last=2b54c093cf1 privkeyio/fix-rpcconsole-wallet-selection-consistency
 	k360  privkeyio/fix-checkblockindex-ordering
@@ -777,6 +779,9 @@ NM	32187 zmq_devirtual_destructor-0.12
 	k453  2rdzy/fix-muhash-self-division					last=7c0562a78ad
 	(CHECK-LAST)	last=b388f9bd0d2 origin-pull/36286/head
 		# Backport of #36286
+	k494  2rdzy/backport-34931-utxo-abort-on-error			last=baf67908a4c
+	(CHECK-LAST)	last=75f64e50c67 origin-pull/34931/head
+		# Backport of #34931, adding util::Expected and without the coin Assert from #34207
 	#28.xTODO# "Knots feature request: system notification for a txn should show the net wallet balance delta assuming the txn confirms, not whatever it does now that gives me a heart attack every time I use a large-ish UTXO lol" -Jason (currently only the first send of a sendmany is shown) https://github.com/bitcoin-core/gui/issues/853
 	# TODO: prunenotify to run a command after each prune (eg, for fstrim or such)
 	
