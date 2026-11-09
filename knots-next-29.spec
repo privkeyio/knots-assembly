@@ -1621,6 +1621,7 @@ m	-     bytespersigopstrict-29+knots			6a7369ce9ee
 		#30.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
 	9749  unique_spk_mempool-29.2+knots			33f7da3074c
 		#30.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
+	k514  privkeyio/fix-spkreuse-package-29+knots			last=8ce66753e63 privkeyio/fix-spkreuse-package
 	-     dustdynamic-29.1+knots				0a4ae5b1237
 	# ---- BEGIN DATACARRIER ---- (OLGA not backported)
 	28408 match_more_datacarrier-29+knots		0e838e7bc9c	last=4d2ec0671a3 match_more_datacarrier

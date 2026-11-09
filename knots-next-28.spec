@@ -1771,6 +1771,7 @@ MERGED	31407 macos_notarization-28					530a83a27bf	last=e181bda061c achow101/mac
 		#29.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
 	9749  unique_spk_mempool-28+knots			84eff5944da	last=b1b8f27e75f unique_spk_mempool-29.2+knots
 		#29.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
+	k514  privkeyio/fix-spkreuse-package					last=8ce66753e63
 	-     dustdynamic-28+knots					5dd1f1ee25e	last=f10a0071c95 dustdynamic-29.1+knots
 	28408 match_more_datacarrier-28+knots		570cb5cb1dc	last=4d2ec0671a3 match_more_datacarrier
 	(CHECK-LAST)	last= match_more_datacarrier-29+knots
