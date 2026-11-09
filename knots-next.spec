@@ -637,8 +637,20 @@ checkout v30.0rc1
 	k484  fix_mempool_persist_only_explicit					last=651d6593941
 	(CHECK-LAST)	last=97e278ecf9d connorslab/policy-monetary-defaults
 	k492  2rdzy/backport-36048-replaceall					last=36941b647cc
+	(CHECK-LAST)	last=db39de56010 origin-pull/36048/head
+		# Backport of #36048, with feature_notifications.py adapted to 29.x
 	k497  2rdzy/backport-944-rpc-console-empty-command		last=424a0c40ccf
+	(CHECK-LAST)	last=fef99e6563a origin-pull-g/944/head
+		# Backport of gui#944
 	k504  2rdzy/backport-34358-removeprunedfunds-conflicts	last=16d0a5e0537
+	(CHECK-LAST)	last=1f60ca360eb origin-pull/34358/head
+		# Backport of #34358, with the test adapted to 29.x
+	k496  2rdzy/backport-36339-listtransactions-overflow	last=75eb3917266
+	(CHECK-LAST)	last=9cff82fd5b1 origin-pull/36339/head
+		# Backport of #36339, keeping int parsing and the -8 errors for a negative count or skip
+	k453  2rdzy/fix-muhash-self-division					last=7c0562a78ad
+	(CHECK-LAST)	last=b388f9bd0d2 origin-pull/36286/head
+		# Backport of #36286
 	#30.xTODO# "Knots feature request: system notification for a txn should show the net wallet balance delta assuming the txn confirms, not whatever it does now that gives me a heart attack every time I use a large-ish UTXO lol" -Jason (currently only the first send of a sendmany is shown) https://github.com/bitcoin-core/gui/issues/853
 	# TODO: prunenotify to run a command after each prune (eg, for fstrim or such)
 	
@@ -1750,6 +1762,7 @@ m	k400  privkeyio/policy-dead-branch-data-29.5+param_bounds	1d7f05a1df2	last=df7
 	k359  pow_hf_blake2b
 	Needs work: k357  privkeyio/hf-sighash-opt-in
 	Triage: k493  2rdzy/backport-35984-psbt-sighash-single	last=7d54593012c
+		# Backport of #35984, with the test added to the older run_test and no PSBTv2 test changes
 	Needs work: k358  chrisguida/rdts-flagday-29+knots
 	Needs work: k363  AcesHigh70/rpc_v2_header_fields
 	Needs work: k368  chrisguida/blake2b-servicebit-29+knots

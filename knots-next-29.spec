@@ -516,7 +516,6 @@ TM	34252 doc_bips_add433-28					6bf72f0593e
 		# + #34437
 	# Needs review: 34348 -  # lib: call RandFailure() if RDRAND fails
 	# Needs review? And/or minimal fix instead? 34349 maflcko/2601-sp-popen-less
-	# Triage: Needs review? 34358 mzumsande/202601_importprunedfund_bug
 	34369 qa_timeout_factor_netshutdown-29		0c5a3ac7c67
 	# Triage: Needs review: 34371 -  # wallet: allow importprunedfunds for spending transactions
 	# Needs review: 34379 rkrux/gethdkeys
@@ -667,8 +666,20 @@ TM	36218 privkeyio/darwin_no_pipe2-29			3428b70f76c	last=9c7748315d3
 	k484  fix_mempool_persist_only_explicit		ce6d4cf6987	last=f4bb2bd961d
 	(CHECK-LAST)	last=97e278ecf9d connorslab/policy-monetary-defaults
 	k492  2rdzy/backport-36048-replaceall					last=36941b647cc
+	(CHECK-LAST)	last=db39de56010 origin-pull/36048/head
+		# Backport of #36048, with feature_notifications.py adapted to 29.x
 	k497  2rdzy/backport-944-rpc-console-empty-command		last=424a0c40ccf
+	(CHECK-LAST)	last=fef99e6563a origin-pull-g/944/head
+		# Backport of gui#944
 	k504  2rdzy/backport-34358-removeprunedfunds-conflicts	last=16d0a5e0537
+	(CHECK-LAST)	last=1f60ca360eb origin-pull/34358/head
+		# Backport of #34358, with the test adapted to 29.x
+	k496  2rdzy/backport-36339-listtransactions-overflow	last=75eb3917266
+	(CHECK-LAST)	last=9cff82fd5b1 origin-pull/36339/head
+		# Backport of #36339, keeping int parsing and the -8 errors for a negative count or skip
+	k453  privkeyio/fix-muhash-self-division-29.5			last=7c0562a78ad 2rdzy/fix-muhash-self-division
+	(CHECK-LAST)	last=b388f9bd0d2 origin-pull/36286/head
+		# Backport of #36286
 	#30.xTODO# "Knots feature request: system notification for a txn should show the net wallet balance delta assuming the txn confirms, not whatever it does now that gives me a heart attack every time I use a large-ish UTXO lol" -Jason (currently only the first send of a sendmany is shown) https://github.com/bitcoin-core/gui/issues/853
 	# TODO: prunenotify to run a command after each prune (eg, for fstrim or such)
 	
@@ -1800,6 +1811,8 @@ m	k400  privkeyio/policy-dead-branch-data-29.5+param_bounds	aff9ac6c8f9	last=df7
 	k357  sighash_unified-29.3+knots			92ea5cf1513	last=54d757f269d privkeyio/hf-sighash-opt-in
 		# TODO: Needs review?
 	k493  2rdzy/backport-35984-psbt-sighash-single			last=7d54593012c
+	(CHECK-LAST)	last=8df006f2338 origin-pull/35984/head
+		# Backport of #35984, with the test added to the older run_test and no PSBTv2 test changes
 	k358  rdts-flagday-29+knots					53358b7f855	last=ce671c29ff5 chrisguida/rdts-flagday-29+knots
 		# TODO: Needs review?
 	k363  rpc_blockheaderv2-29+knots			938f8a0d2cb	last=2736df8e879 AcesHigh70/rpc_v2_header_fields
