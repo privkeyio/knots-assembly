@@ -776,7 +776,7 @@ NM	32187 zmq_devirtual_destructor-0.12
 	k496  2rdzy/backport-36339-listtransactions-overflow	last=75eb3917266
 	(CHECK-LAST)	last=9cff82fd5b1 origin-pull/36339/head
 		# Backport of #36339, keeping int parsing and the -8 errors for a negative count or skip
-	k453  2rdzy/fix-muhash-self-division					last=7c0562a78ad
+	k453  2rdzy/fix-muhash-self-division					last=03ecebfff8f
 	(CHECK-LAST)	last=b388f9bd0d2 origin-pull/36286/head
 		# Backport of #36286
 	k494  2rdzy/backport-34931-utxo-abort-on-error			last=baf67908a4c
