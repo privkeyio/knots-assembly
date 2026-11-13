@@ -1595,6 +1595,7 @@ m	-     privkeyio/datacarriercost-29+param_bounds	7b727bd1c8a	last=86cf9d6ee8f d
 		30.xTODO: TODO: Add to getmempoolinfo like #29954 (MERGED) (see b02aab950af)
 		# Currently filters just Runes
 	Needs review: k349  privkeyio/policy-reject-counterparty
+	Needs review: k489  jasonsopko/policy-token-messages
 	k78   rejectparasites-29.1+knots			606644447fa	last=d978324923a
 		30.xTODO: TODO: Add to getmempoolinfo like #29954 (MERGED) (see b02aab950af)
 		# Currently filters just CAT-21

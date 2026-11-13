@@ -1796,6 +1796,7 @@ MERGED	31407 macos_notarization-28					530a83a27bf	last=e181bda061c achow101/mac
 		#29.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
 		# Currently filters just Runes
 	Needs review: k349  privkeyio/policy-reject-counterparty
+	Needs review: k489  jasonsopko/policy-token-messages
 	k78   rejectparasites-28+knots				6c5ca3ed56c	last=d978324923a
 	(CHECK-LAST)	last=11bb4add0bc rejectparasites-29.1+knots
 		#29.xTODO# TODO: Add to getmempoolinfo like #29954 (see b02aab950af)
