@@ -1811,6 +1811,7 @@ m	k400  privkeyio/policy-dead-branch-data-29.5+param_bounds	aff9ac6c8f9	last=df7
 		# + knots#256 + maxstaleoutbound + maxstaleoutbound=8 + knots#323 + fixes + knots#362
 		# TODO: + updated fixed seeds ?
 		# NOTE: Core PR in #24930
+	k470  privkeyio/policy-verified-key-datacarrier-credit-29+knots	last=b15b6e16bb4 LionThunderFingers/policy-verified-key-datacarrier-credit
 	k320  miniscript_guard_tapscript_opif-29	73329d02a55	last=74a8dd54ae8 privkeyio/rdts-guard-opif-tapscript
 	-     privkeyio/seeds_update-29.5+knots		99ccb6b3777	last=ae8cbd93307 seeds_update-29+knots
 	k350  privkeyio/correct-rdts-invalid-blocks	451a67754b3	last=e8a82740997
