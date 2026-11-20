@@ -182,6 +182,24 @@ python3 build/test/functional/tool_cli_completion.py --overwrite
 - `(CHECK-LAST)` lines,
 - the hash columns, which must stay the maintainer's (from the last "New -next" commit) because each one becomes a parent of the next merge. Leave new lines without one.
 
+## Adding a backport
+
+Check a backport against the upstream PR before its line goes into a spec, and again whenever its `last=` moves. The maintainer reviews the backport by diffing it against upstream, so every difference he finds that the comment does not explain costs a review round.
+
+1. List the upstream PR's commits and the backport's commits and compare them one by one with `git range-diff <upstream head>~<N>..<upstream head> <merge-base of the branch and the Core tag>..<branch>`, where `<N>` is the number of commits in the PR. Check that no upstream commit is missing.
+2. Compare the full diff, tests included. Every difference must either go, or be an adaptation the older branch needs (an API that does not exist yet, a test mode the older branch still runs).
+3. Do not add anything upstream does not have, such as extra test cases or reworded comments. Keep upstream's text exactly, typos included.
+4. Cherry-pick the upstream commits onto every base the line will be assembled on, build, and run the touched tests in every mode the test runner lists for them (for example `rpc_psbt.py --legacy-wallet` and `--descriptors`). A fix written for a newer Core can use a helper the older branch does not have.
+5. Write each remaining difference into the comment under the line. "Backport of #NNNNN" alone means it matches upstream exactly. k493 in the 29.5.1 spec is an example:
+
+```text
+	k493  privkeyio/backport-35984-psbt-sighash-single-29	last=7d54593012c 2rdzy/backport-35984-psbt-sighash-single
+	(CHECK-LAST)	last=8df006f2338 origin-pull/35984/head
+		# Backport of #35984, with the test skipping bech32m on legacy wallets and run after test_input_confs_control, and no PSBTv2 test changes
+```
+
+Its first version also added a second signing pass and reworded the test comments, which upstream does not have, and the maintainer caught it in review.
+
 ## Verifying before handing a spec over
 
 1. Assemble the spec from scratch with the update check on (see "Assembling by hand" in [`TUTORIAL.md`](TUTORIAL.md)), and check the tree matches the assembly you tested. Fetch every remote the spec names first, including the upstreams after `last=` and in `(CHECK-LAST)` lines. The assembler only fetches when run with `-f`, so otherwise it compares against whatever refs are already local.
