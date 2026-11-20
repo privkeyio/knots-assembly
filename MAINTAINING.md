@@ -190,7 +190,8 @@ Check a backport against the upstream PR before its line goes into a spec, and a
 2. Compare the full diff, tests included. Every difference must either go, or be an adaptation the older branch needs (an API that does not exist yet, a test mode the older branch still runs).
 3. Do not add anything upstream does not have, such as extra test cases or reworded comments. Keep upstream's text exactly, typos included.
 4. Cherry-pick the upstream commits onto every base the line will be assembled on, build, and run the touched tests in every mode the test runner lists for them (for example `rpc_psbt.py --legacy-wallet` and `--descriptors`). A fix written for a newer Core can use a helper the older branch does not have.
-5. Write each remaining difference into the comment under the line. "Backport of #NNNNN" alone means it matches upstream exactly. k493 in the 29.5.1 spec is an example:
+5. Give each backported commit the standard trailers at the end of its message, `Github-Pull: #NNNNN` and `Rebased-From: <full upstream commit hash>`, instead of the "(cherry picked from commit ...)" line that `git cherry-pick -x` writes. Say in the message how the commit was adapted, if it was.
+6. Write each remaining difference into the comment under the line. "Backport of #NNNNN" alone means it matches upstream exactly. k493 in the 29.5.1 spec is an example:
 
 ```text
 	k493  privkeyio/backport-35984-psbt-sighash-single-29	last=7d54593012c 2rdzy/backport-35984-psbt-sighash-single
@@ -199,6 +200,8 @@ Check a backport against the upstream PR before its line goes into a spec, and a
 ```
 
 Its first version also added a second signing pass and reworded the test comments, which upstream does not have, and the maintainer caught it in review.
+
+When a fix changes a branch that a spec under review already names, push the fix under a new branch name and update the spec. A force push moves the branch out from under the spec the maintainer is assembling, and its `(CHECK-LAST)` fails.
 
 ## Verifying before handing a spec over
 
